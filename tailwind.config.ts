@@ -27,6 +27,12 @@ export default {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        educational: {
+          blue: "hsl(var(--educational-blue))",
+          green: "hsl(var(--educational-green))",
+          purple: "hsl(var(--educational-purple))",
+          orange: "hsl(var(--educational-orange))",
+        },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",

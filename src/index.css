@@ -8,20 +8,40 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 218 23% 97%;
+    --foreground: 220 62% 13%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 62% 13%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 62% 13%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 219 62% 17%;
+    --primary-foreground: 218 23% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 155 85% 44%;
+    --secondary-foreground: 0 0% 100%;
+
+    --accent: 213 100% 96%;
+    --accent-foreground: 219 62% 17%;
+
+    --educational-blue: 219 100% 52%;
+    --educational-green: 155 85% 44%;
+    --educational-purple: 259 100% 65%;
+    --educational-orange: 24 95% 53%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(219 62% 17%), hsl(219 100% 52%));
+    --gradient-secondary: linear-gradient(135deg, hsl(155 85% 44%), hsl(155 85% 34%));
+    --gradient-hero: linear-gradient(135deg, hsl(219 62% 17%), hsl(219 100% 52%), hsl(155 85% 44%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(218 23% 97%));
+
+    --shadow-soft: 0 2px 10px -2px hsl(219 62% 17% / 0.1);
+    --shadow-medium: 0 8px 25px -8px hsl(219 62% 17% / 0.15);
+    --shadow-large: 0 25px 50px -12px hsl(219 62% 17% / 0.25);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;

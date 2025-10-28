@@ -1,0 +1,442 @@
+# SMART CLASS AXIS - COMPLETE API ENDPOINTS LIST
+# Based on Frontend Requirements Analysis
+
+## 🔐 AUTHENTICATION & AUTHORIZATION APIs
+
+### User Authentication
+POST /api/auth/login
+- Body: { email, password, role }
+- Response: { token, user, role, permissions }
+
+POST /api/auth/logout
+- Headers: { Authorization: Bearer <token> }
+- Response: { message: "Logged out successfully" }
+
+POST /api/auth/refresh
+- Headers: { Authorization: Bearer <token> }
+- Response: { token, expiresIn }
+
+### User Registration (HOD Only)
+POST /api/auth/signup
+- Body: { fullName, email, password, collegeCode, role: "hod" }
+- Response: { user, message: "Account created successfully" }
+
+### Profile Management
+GET /api/auth/profile
+- Headers: { Authorization: Bearer <token> }
+- Response: { user profile data }
+
+PUT /api/auth/profile
+- Headers: { Authorization: Bearer <token> }
+- Body: { fullName, email, phone, address }
+- Response: { updated user profile }
+
+## 🏠 HOD DASHBOARD APIs
+
+### Dashboard Overview
+GET /api/hod/dashboard/stats
+- Response: { totalProfessors, totalStudents, totalSubjects }
+
+GET /api/hod/dashboard/overview
+- Response: { recentActivity, notices, announcements }
+
+### Professor Management
+GET /api/hod/professors
+- Response: [{ id, name, email, subject, experience, status }]
+
+POST /api/hod/professors
+- Body: { name, email, subject, experience, password }
+- Response: { professor, message: "Professor added successfully" }
+
+GET /api/hod/professors/:id
+- Response: { professor details }
+
+PUT /api/hod/professors/:id
+- Body: { name, email, subject, experience }
+- Response: { updated professor }
+
+DELETE /api/hod/professors/:id
+- Response: { message: "Professor deleted successfully" }
+
+### Student Management (View Only)
+GET /api/hod/students
+- Response: [{ id, name, rollNo, course, year, status, avatar }]
+
+GET /api/hod/students/:id
+- Response: { student details }
+
+### Attendance Management
+GET /api/hod/attendance/students
+- Response: [{ id, name, rollNo, totalClasses, attended, percentage }]
+
+GET /api/hod/attendance/professors
+- Response: [{ id, name, subject, totalClasses, conducted, percentage }]
+
+POST /api/hod/attendance/professors/mark
+- Body: { date, attendance: [{ professorId, status }] }
+- Response: { message: "Attendance saved successfully" }
+
+GET /api/hod/attendance/reports
+- Query: { startDate, endDate, type }
+- Response: { attendance reports }
+
+### Exam Results Management
+GET /api/hod/results
+- Response: [{ subject, totalStudents, passed, failed, passPercentage, students }]
+
+GET /api/hod/results/subjects
+- Response: [{ subject, results }]
+
+GET /api/hod/results/statistics
+- Response: { overallStats, subjectWiseStats }
+
+### Notice Management
+GET /api/hod/notices
+- Response: [{ id, title, content, date, author, priority, category }]
+
+POST /api/hod/notices
+- Body: { title, content, priority, category }
+- Response: { notice, message: "Notice published successfully" }
+
+GET /api/hod/notices/:id
+- Response: { notice details }
+
+PUT /api/hod/notices/:id
+- Body: { title, content, priority, category }
+- Response: { updated notice }
+
+DELETE /api/hod/notices/:id
+- Response: { message: "Notice deleted successfully" }
+
+## 👨‍🏫 PROFESSOR DASHBOARD APIs
+
+### Dashboard Overview
+GET /api/professor/dashboard/stats
+- Response: { totalClasses, totalChapters, completedChapters, pendingChapters, activeAssignments }
+
+GET /api/professor/dashboard/overview
+- Response: { recentActivity, upcomingClasses, notifications }
+
+### Student Management
+GET /api/professor/students
+- Response: [{ id, rollNo, name, email, phone, joinDate }]
+
+POST /api/professor/students
+- Body: { rollNo, name, email, phone, password }
+- Response: { student, message: "Student added successfully" }
+
+GET /api/professor/students/:id
+- Response: { student details }
+
+DELETE /api/professor/students/:id
+- Response: { message: "Student removed successfully" }
+
+### Attendance Management
+GET /api/professor/attendance/students
+- Response: [{ id, name, rollNo, totalClasses, attended, percentage }]
+
+GET /api/professor/attendance/professors
+- Response: [{ id, name, subject, totalClasses, conducted, percentage }]
+
+POST /api/professor/attendance/mark
+- Body: { date, type, records: [{ userId, status }] }
+- Response: { message: "Attendance marked successfully" }
+
+### Study Materials Management
+GET /api/professor/materials
+- Response: [{ id, title, description, type, subject, uploadDate, fileSize, downloads }]
+
+POST /api/professor/materials
+- Body: { title, description, type, file }
+- Response: { material, message: "Material uploaded successfully" }
+
+GET /api/professor/materials/:id
+- Response: { material details }
+
+PUT /api/professor/materials/:id
+- Body: { title, description, type }
+- Response: { updated material }
+
+DELETE /api/professor/materials/:id
+- Response: { message: "Material deleted successfully" }
+
+GET /api/professor/materials/:id/download
+- Response: { file download }
+
+### Assignment Management
+GET /api/professor/assignments
+- Response: [{ id, title, description, dueDate, createdDate, maxMarks, submissions, totalStudents, status }]
+
+POST /api/professor/assignments
+- Body: { title, description, dueDate, maxMarks }
+- Response: { assignment, message: "Assignment created successfully" }
+
+GET /api/professor/assignments/:id
+- Response: { assignment details }
+
+PUT /api/professor/assignments/:id
+- Body: { title, description, dueDate, maxMarks }
+- Response: { updated assignment }
+
+DELETE /api/professor/assignments/:id
+- Response: { message: "Assignment deleted successfully" }
+
+GET /api/professor/assignments/:id/submissions
+- Response: [{ id, studentName, rollNo, submittedDate, status, marks }]
+
+POST /api/professor/assignments/:id/submissions/:submissionId/grade
+- Body: { marks, feedback }
+- Response: { message: "Submission graded successfully" }
+
+### Exam Results Management
+GET /api/professor/results
+- Response: [{ id, rollNo, name, midTerm, finalExam, total, grade, status }]
+
+POST /api/professor/results
+- Body: { studentId, examType, marks }
+- Response: { result, message: "Result added successfully" }
+
+GET /api/professor/results/statistics
+- Response: { totalStudents, passedStudents, failedStudents, passPercentage }
+
+PUT /api/professor/results/:id
+- Body: { marks, grade }
+- Response: { updated result }
+
+### Communication Management
+GET /api/professor/communication/doubts
+- Response: [{ id, studentName, rollNo, subject, question, askedDate, status, priority, reply }]
+
+POST /api/professor/communication/doubts/:id/reply
+- Body: { reply }
+- Response: { message: "Reply sent successfully" }
+
+GET /api/professor/communication/doubts/:id
+- Response: { doubt details }
+
+## 🎓 STUDENT DASHBOARD APIs
+
+### Dashboard Overview
+GET /api/student/dashboard/stats
+- Response: { subjects, assignments, completed, attendance }
+
+GET /api/student/dashboard/overview
+- Response: { notices, announcements, upcomingEvents }
+
+### Study Materials
+GET /api/student/materials
+- Response: [{ id, title, description, type, subject, uploadDate, fileSize, downloads }]
+
+GET /api/student/materials/:id
+- Response: { material details }
+
+GET /api/student/materials/:id/download
+- Response: { file download }
+
+### Assignment Management
+GET /api/student/assignments
+- Response: [{ id, title, description, dueDate, maxMarks, status, submission }]
+
+GET /api/student/assignments/:id
+- Response: { assignment details }
+
+POST /api/student/assignments/:id/submit
+- Body: { file, comments }
+- Response: { message: "Assignment submitted successfully" }
+
+GET /api/student/assignments/:id/submission
+- Response: { submission details, marks, feedback }
+
+### Attendance Management
+GET /api/student/attendance
+- Response: { overallAttendance, subjectWiseAttendance, recentHistory }
+
+GET /api/student/attendance/subjects
+- Response: [{ subject, professor, totalClasses, attended, percentage, progress }]
+
+GET /api/student/attendance/history
+- Response: [{ date, subject, status }]
+
+### Exam Results
+GET /api/student/results
+- Response: [{ subject, midTerm, finalExam, total, grade, status }]
+
+GET /api/student/results/:subjectId
+- Response: { detailed results for subject }
+
+### Communication
+GET /api/student/communication/doubts
+- Response: [{ id, subject, question, askedDate, status, reply }]
+
+POST /api/student/communication/doubts
+- Body: { subject, question, priority }
+- Response: { doubt, message: "Question submitted successfully" }
+
+GET /api/student/communication/doubts/:id
+- Response: { doubt details with reply }
+
+## 📊 SHARED/COMMON APIs
+
+### Notices & Announcements
+GET /api/notices
+- Query: { role, category, priority }
+- Response: [{ id, title, content, date, author, priority, category }]
+
+GET /api/notices/:id
+- Response: { notice details }
+
+### Subjects Management
+GET /api/subjects
+- Response: [{ id, subjectCode, subjectName, description, credits, department }]
+
+GET /api/subjects/:id
+- Response: { subject details }
+
+### College Information
+GET /api/college/info
+- Response: { college details, departments, settings }
+
+GET /api/college/departments
+- Response: [{ id, name, code, hodId }]
+
+### File Upload/Download
+POST /api/files/upload
+- Body: { file, type, metadata }
+- Response: { fileId, url, size }
+
+GET /api/files/:fileId/download
+- Response: { file download }
+
+DELETE /api/files/:fileId
+- Response: { message: "File deleted successfully" }
+
+### Search & Filter
+GET /api/search
+- Query: { q, type, filters }
+- Response: { results }
+
+### Reports & Analytics
+GET /api/reports/attendance
+- Query: { startDate, endDate, type, filters }
+- Response: { attendance reports }
+
+GET /api/reports/academic
+- Query: { semester, year, type }
+- Response: { academic reports }
+
+GET /api/reports/performance
+- Query: { subject, professor, student }
+- Response: { performance analytics }
+
+## 🔧 SYSTEM APIs
+
+### Health Check
+GET /api/health
+- Response: { status: "OK", timestamp, version }
+
+### System Status
+GET /api/system/status
+- Response: { database, services, uptime }
+
+### Backup & Maintenance
+POST /api/system/backup
+- Headers: { Authorization: Bearer <admin-token> }
+- Response: { backupId, message: "Backup initiated" }
+
+GET /api/system/logs
+- Query: { level, startDate, endDate }
+- Response: { logs }
+
+## 📱 REAL-TIME APIs (WebSocket)
+
+### WebSocket Endpoints
+WS /ws/notifications
+- Real-time notifications for all users
+
+WS /ws/attendance
+- Real-time attendance updates
+
+WS /ws/communication
+- Real-time chat/messaging
+
+WS /ws/assignments
+- Real-time assignment updates
+
+## 🔒 SECURITY & PERMISSIONS
+
+### Role-Based Access Control
+- HOD: Full access to all APIs
+- Professor: Access to student management, materials, assignments, results, communication
+- Student: Read-only access to most data, can submit assignments and ask questions
+
+### API Rate Limiting
+- Authentication APIs: 5 requests per minute
+- CRUD Operations: 100 requests per minute
+- File Upload: 10 requests per minute
+- Search APIs: 50 requests per minute
+
+### Data Validation
+- All POST/PUT requests require input validation
+- File uploads limited to specific formats and sizes
+- Email and phone number format validation
+- Date range validation for reports
+
+## 📋 RESPONSE FORMATS
+
+### Success Response
+{
+  "success": true,
+  "data": { ... },
+  "message": "Operation completed successfully",
+  "timestamp": "2024-03-15T10:30:00Z"
+}
+
+### Error Response
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid input data",
+    "details": { ... }
+  },
+  "timestamp": "2024-03-15T10:30:00Z"
+}
+
+### Pagination Response
+{
+  "success": true,
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 100,
+    "totalPages": 5
+  }
+}
+
+## 🗂️ FILE STRUCTURE RECOMMENDATIONS
+
+### API Versioning
+- Base URL: /api/v1/
+- All endpoints prefixed with version
+
+### Endpoint Naming Convention
+- Use RESTful conventions
+- Use plural nouns for collections
+- Use HTTP methods appropriately (GET, POST, PUT, DELETE)
+- Use query parameters for filtering and pagination
+
+### Database Collections (MongoDB)
+- users
+- professors
+- students
+- subjects
+- attendance
+- exam_results
+- notices
+- assignments
+- materials
+- communications
+- colleges
+
+This comprehensive API list covers all the functionality required by the frontend components across all three dashboards (HOD, Professor, Student) and provides a complete backend foundation for the Smart Class Axis system.

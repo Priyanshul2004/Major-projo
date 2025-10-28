@@ -1,59 +1,233 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { TooltipProvider, NotFound } from "@/shared/components";
+import { Toaster } from "@/shared/components/ui/toaster";
+import { Toaster as Sonner } from "@/shared/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Landing from "./pages/Landing";
-import HODDashboard from "./pages/hod/HODDashboard";
-import HODAttendance from "./pages/hod/HODAttendance";
-import HODProfessors from "./pages/hod/HODProfessors";
-import HODResults from "./pages/hod/HODResults";
-import HODNotices from "./pages/hod/HODNotices";
-import ProfessorDashboard from "./pages/professor/ProfessorDashboard";
-import ProfessorAttendance from "./pages/professor/ProfessorAttendance";
-import ProfessorStudents from "./pages/professor/ProfessorStudents";
-import ProfessorMaterials from "./pages/professor/ProfessorMaterials";
-import ProfessorAssignments from "./pages/professor/ProfessorAssignments";
-import ProfessorResults from "./pages/professor/ProfessorResults";
-import ProfessorCommunication from "./pages/professor/ProfessorCommunication";
-import StudentDashboard from "./pages/student/StudentDashboard";
-import StudentMaterials from "./pages/student/StudentMaterials";
-import StudentAssignments from "./pages/student/StudentAssignments";
-import StudentAttendance from "./pages/student/StudentAttendance";
-import StudentCommunication from "./pages/student/StudentCommunication";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "@/contexts/AuthContext";
+import Login from "./features/auth/Login";
+import Signup from "./features/auth/Signup";
+import Auth from "./features/auth/Auth";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { Landing } from "./features/landing";
+import {
+  HODDashboard,
+  HODAttendance,
+  HODStudents,
+  HODProfessors,
+  HODResults,
+  HODNotices,
+  ProfessorDashboard,
+  ProfessorAttendance,
+  ProfessorStudents,
+  ProfessorMaterials,
+  ProfessorResults,
+  ProfessorCommunication,
+  ProfessorNotices,
+  StudentDashboard,
+  StudentMaterials,
+  StudentAttendance,
+  StudentCommunication,
+  StudentResults,
+  StudentNotices,
+} from "./features/dashboard";
+import HODDashboardSimple from "./features/dashboard/hod/HODDashboardSimple";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/hod" element={<HODDashboard />} />
-          <Route path="/hod/attendance" element={<HODAttendance />} />
-          <Route path="/hod/professors" element={<HODProfessors />} />
-          <Route path="/hod/results" element={<HODResults />} />
-          <Route path="/hod/notices" element={<HODNotices />} />
-          <Route path="/professor" element={<ProfessorDashboard />} />
-          <Route path="/professor/attendance" element={<ProfessorAttendance />} />
-          <Route path="/professor/students" element={<ProfessorStudents />} />
-          <Route path="/professor/materials" element={<ProfessorMaterials />} />
-          <Route path="/professor/assignments" element={<ProfessorAssignments />} />
-          <Route path="/professor/results" element={<ProfessorResults />} />
-          <Route path="/professor/communication" element={<ProfessorCommunication />} />
-          <Route path="/student" element={<StudentDashboard />} />
-          <Route path="/student/materials" element={<StudentMaterials />} />
-          <Route path="/student/assignments" element={<StudentAssignments />} />
-          <Route path="/student/attendance" element={<StudentAttendance />} />
-          <Route path="/student/communication" element={<StudentCommunication />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<Landing />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            
+            {/* HOD Routes */}
+            <Route 
+              path="/hod" 
+              element={
+                <ProtectedRoute allowedRoles={['hod']}>
+                  <HODDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/hod/attendance" 
+              element={
+                <ProtectedRoute allowedRoles={['hod']}>
+                  <HODAttendance />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/hod/students" 
+              element={
+                <ProtectedRoute allowedRoles={['hod']}>
+                  <HODStudents />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/hod/professors" 
+              element={
+                <ProtectedRoute allowedRoles={['hod']}>
+                  <HODProfessors />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/hod/results" 
+              element={
+                <ProtectedRoute allowedRoles={['hod']}>
+                  <HODResults />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/hod/notices" 
+              element={
+                <ProtectedRoute allowedRoles={['hod']}>
+                  <HODNotices />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Professor Routes */}
+            <Route 
+              path="/professor" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/professor/attendance" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorAttendance />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/professor/classes" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorStudents />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/professor/students" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorStudents />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/professor/materials" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorMaterials />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/professor/results" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorResults />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/professor/communication" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorCommunication />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/professor/notices" 
+              element={
+                <ProtectedRoute allowedRoles={['professor']}>
+                  <ProfessorNotices />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Student Routes */}
+            <Route 
+              path="/student" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/student/subjects" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentMaterials />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/student/materials" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentMaterials />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/student/attendance" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentAttendance />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/student/results" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentResults />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/student/communication" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentCommunication />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/student/notices" 
+              element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentNotices />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* 404 Route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
